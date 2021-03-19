@@ -1,0 +1,197 @@
+$multiplier: 3;
+$console-height: 102px * $multiplier;
+$middle-width: 173px * $multiplier;
+$full-width: 239px * $multiplier;
+$left-and-right-width: ($full-width - $middle-width)/2;
+$joycon-border-radius: 40px;
+$screen-height: 85px * $multiplier;
+$screen-width: 152px * $multiplier;
+$screen-border-radius: 5px;
+$background-color: rgb(232, 232, 106);
+$reflection-height: 15px;
+$reflection-1-width: 150px;
+$reflection-2-width: 50px;
+$joystick-size: 18px * $multiplier;
+$button-size: 7px * $multiplier;
+$dark-grey: #404042;
+$light-grey: #717171;
+$middle-of-joycon: $left-and-right-width/2 - $joystick-size/2;
+
+@mixin middle-with-flex() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  @include middle-with-flex();
+  height: 100vh;
+  margin: 0;
+  background-color: $background-color;
+}
+
+#container {
+  display: flex;
+}
+
+#left,
+#right {
+  width: $left-and-right-width;
+  height: $console-height;
+  z-index: 2;
+}
+
+.joystick {
+  height: $joystick-size;
+  width: $joystick-size;
+  border-radius: 50%;
+  background-color: $dark-grey;
+  box-shadow: inset 0 0 0 3px $dark-grey, inset 0 0 0 5px $light-grey;
+}
+
+#left {
+  background-color: #05bfdf;
+  border-radius: $joycon-border-radius 0 0 $joycon-border-radius;
+  position: relative;
+
+  #minus-button {
+    background-color: $dark-grey;
+    height: 8px;
+    width: 18px;
+    position: absolute;
+    top: $joystick-size/2;
+    right: 10px;
+  }
+
+  .joystick {
+    position: absolute;
+    top: $joystick-size;
+    left: $middle-of-joycon;
+  }
+
+  #d-pad {
+    position: absolute;
+    left: $middle-of-joycon;
+    top: $console-height * (7/15);
+    display: grid;
+    grid-template-areas:
+      ". up ."
+      "left . right"
+      ". down .";
+
+    .button {
+      width: $button-size;
+      height: $button-size;
+      background-color: $dark-grey;
+      border-radius: 50%;
+      @include middle-with-flex();
+
+      .arrow {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-color: transparent;
+        border-bottom-color: $light-grey;
+        border-left-width: 5px;
+        border-right-width: 5px;
+        border-bottom-width: 7px;
+        margin-bottom: 3px;
+      }
+    }
+
+    .up {
+      grid-area: up;
+    }
+    .right {
+      grid-area: right;
+      transform: rotate(90deg);
+    }
+    .down {
+      grid-area: down;
+      transform: rotate(180deg);
+    }
+    .left {
+      grid-area: left;
+      transform: rotate(-90deg);
+    }
+  }
+
+  #screenshot {
+    width: 18px;
+    height: 18px;
+    background-color: $dark-grey;
+    border-radius: 2px;
+    @include middle-with-flex();
+    position: absolute;
+    right: 24px;
+    bottom: $joystick-size + 10px;
+
+    .inner {
+      width: 80%;
+      height: 80%;
+      border-radius: 50%;
+      border: 1px solid $light-grey;
+      border-color: $light-grey;
+    }
+  }
+}
+
+#right {
+  background-color: #ff6356;
+  border-radius: 0 $joycon-border-radius $joycon-border-radius 0;
+}
+
+#middle {
+  background-color: black;
+  width: $middle-width;
+  height: $console-height;
+  @include middle-with-flex();
+  position: relative;
+
+  .screen-cutaway {
+    position: absolute;
+    top: -10px;
+    border-radius: 50%;
+    background-color: $background-color;
+    height: 20px;
+    width: 20px;
+
+    &.cutaway-right {
+      right: -10px;
+    }
+
+    &.cutaway-left {
+      left: -10px;
+    }
+  }
+
+  #screen {
+    height: $screen-height;
+    width: $screen-width;
+    background-color: #45484d;
+    border-radius: $screen-border-radius;
+    position: relative;
+
+    .reflection {
+      position: absolute;
+      background-color: whitesmoke;
+      border-radius: 50px;
+      height: $reflection-height;
+      top: 15px;
+
+      &.reflection-1 {
+        width: $reflection-1-width;
+        left: 15px;
+      }
+
+      &.reflection-2 {
+        width: $reflection-2-width;
+        left: 15px + $reflection-1-width + 15px;
+      }
+    }
+  }
+}
