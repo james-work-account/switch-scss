@@ -1,0 +1,22 @@
+{
+  "name": "switch",
+  "version": "1.0.0",
+  "description": "Nintendo Switch made entirely out of divs and SCSS.",
+  "main": "index.js",
+  "scripts": {
+    "sass": "node-sass src/ -o src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/james-work-account/switch-scss.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/james-work-account/switch-scss/issues"
+  },
+  "homepage": "https://github.com/james-work-account/switch-scss#readme",
+  "dependencies": {
+    "node-sass": "^5.0.0"
+  }
+}

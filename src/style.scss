@@ -1,22 +1,41 @@
-$multiplier: 3;
+$multiplier: 5;
+
+// Colours
+$background-color: rgb(232, 232, 106);
+$dark-grey: #404042;
+$light-grey: #717171;
+$joycon-right-color: #ff6356;
+$joycon-left-color: #05bfdf;
+$screen-colour: #45484d;
+$shadow: rgba($screen-colour, 0.2);
+$button-outer-shadow: 0 1px * $multiplier 0 0 $shadow;
+$joycon-outer-shadow: 0 1.5px * $multiplier 0 0 $shadow;
+$bottom-shadow: inset 0 -3px * $multiplier 0 0 $shadow;
+
+// General Console
 $console-height: 102px * $multiplier;
 $middle-width: 173px * $multiplier;
 $full-width: 239px * $multiplier;
 $left-and-right-width: ($full-width - $middle-width)/2;
-$joycon-border-radius: 40px;
+
+// Screen
 $screen-height: 85px * $multiplier;
 $screen-width: 152px * $multiplier;
 $screen-border-radius: 5px;
-$background-color: rgb(232, 232, 106);
-$reflection-height: 15px;
-$reflection-1-width: 150px;
-$reflection-2-width: 50px;
+$reflection-height: 5px * $multiplier;
+$reflection-1-width: 50px * $multiplier;
+$reflection-2-width: 18px * $multiplier;
+
+// Joycons
+$joycon-border-radius: 40px;
 $joystick-size: 18px * $multiplier;
 $button-size: 7px * $multiplier;
-$dark-grey: #404042;
-$light-grey: #717171;
-$middle-of-joycon: $left-and-right-width/2 - $joystick-size/2;
-$joycon-right-color: #ff6356;
+$small-button-distance-from-middle: 8px * $multiplier;
+$small-button-size: 6px * $multiplier;
+@function middle-of-joycon($size) {
+  @return $left-and-right-width/2 - $size/2;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
 
 @mixin middle-with-flex() {
@@ -53,9 +72,10 @@ body {
   width: $joystick-size;
   border-radius: 50%;
   background-color: $dark-grey;
-  box-shadow: inset 0 0 0 3px $dark-grey, inset 0 0 0 5px $light-grey;
+  box-shadow: inset 0 0 0 (1px * $multiplier) $dark-grey,
+    inset 0 0 0 2px * $multiplier $light-grey, $joycon-outer-shadow;
   position: absolute;
-  left: $middle-of-joycon;
+  left: middle-of-joycon($joystick-size);
 }
 
 .button {
@@ -63,22 +83,24 @@ body {
   height: $button-size;
   background-color: $dark-grey;
   border-radius: 50%;
+  box-shadow: $button-outer-shadow;
   @include middle-with-flex();
 }
 
 #left {
-  background-color: #05bfdf;
+  background-color: $joycon-left-color;
   border-radius: $joycon-border-radius 0 0 $joycon-border-radius;
   position: relative;
-  box-shadow: -3px -10px 0 -5px black;
+  box-shadow: -1px * $multiplier -4px * $multiplier 0 -2px * $multiplier black,
+    $bottom-shadow;
 
   #minus-button {
     background-color: $dark-grey;
-    height: 8px;
-    width: 18px;
+    height: 2px * $multiplier;
+    width: 6px * $multiplier;
     position: absolute;
     top: $joystick-size/2;
-    right: 10px;
+    right: 3px * $multiplier;
   }
 
   .joystick {
@@ -87,7 +109,7 @@ body {
 
   #d-pad {
     position: absolute;
-    left: $middle-of-joycon;
+    left: middle-of-joycon($button-size * 3);
     top: $console-height * (7/15);
     display: grid;
     grid-template-areas:
@@ -101,44 +123,59 @@ body {
       border-style: solid;
       border-color: transparent;
       border-bottom-color: $light-grey;
-      border-left-width: 5px;
-      border-right-width: 5px;
-      border-bottom-width: 7px;
-      margin-bottom: 3px;
+      border-left-width: 1.75px * $multiplier;
+      border-right-width: 1.75px * $multiplier;
+      border-bottom-width: 2.5px * $multiplier;
     }
 
     .up {
       grid-area: up;
+
+      .arrow {
+        margin-bottom: 1px * $multiplier;
+      }
     }
     .right {
       grid-area: right;
-      transform: rotate(90deg);
+
+      .arrow {
+        transform: rotate(90deg);
+        margin-left: 1px * $multiplier;
+      }
     }
     .down {
       grid-area: down;
-      transform: rotate(180deg);
+
+      .arrow {
+        transform: rotate(180deg);
+        margin-top: 1px * $multiplier;
+      }
     }
     .left {
       grid-area: left;
-      transform: rotate(-90deg);
+
+      .arrow {
+        transform: rotate(-90deg);
+        margin-right: 1px * $multiplier;
+      }
     }
   }
 
   #screenshot {
-    width: 18px;
-    height: 18px;
+    width: $small-button-size;
+    height: $small-button-size;
     background-color: $dark-grey;
     border-radius: 2px;
     @include middle-with-flex();
     position: absolute;
-    right: 24px;
+    right: $small-button-distance-from-middle;
     bottom: $joystick-size + 10px;
 
     .inner {
       width: 80%;
       height: 80%;
       border-radius: 50%;
-      border: 1px solid $light-grey;
+      border: 1px/3 * $multiplier solid $light-grey;
       border-color: $light-grey;
     }
   }
@@ -148,16 +185,17 @@ body {
   background-color: $joycon-right-color;
   border-radius: 0 $joycon-border-radius $joycon-border-radius 0;
   position: relative;
-  box-shadow: 3px -10px 0 -5px black;
+  box-shadow: 1px * $multiplier -4px * $multiplier 0 -2px * $multiplier black,
+    $bottom-shadow;
 
   #plus-button {
-    width: 18px;
-    height: 18px;
+    width: $small-button-size;
+    height: $small-button-size;
     background-color: $joycon-right-color;
     background: linear-gradient($dark-grey, $dark-grey),
       linear-gradient($dark-grey, $dark-grey), $joycon-right-color;
     background-position: center;
-    background-size: 100% 4px, 4px 100%; // Thank you stack overflow
+    background-size: 100% 2px * $multiplier, 2px * $multiplier 100%; // Thank you stack overflow
     background-repeat: no-repeat;
     position: absolute;
     top: ($joystick-size/2 - 9px);
@@ -166,7 +204,7 @@ body {
 
   #abxy {
     position: absolute;
-    right: $middle-of-joycon;
+    right: middle-of-joycon($button-size * 3);
     top: $joystick-size;
     display: grid;
     grid-template-areas:
@@ -174,7 +212,7 @@ body {
       "y . a"
       ". b .";
     color: $light-grey;
-    font-size: 12px;
+    font-size: 4px * $multiplier;
 
     .a {
       grid-area: a;
@@ -211,14 +249,14 @@ body {
   }
 
   #home {
-    width: 18px;
-    height: 18px;
+    width: $small-button-size;
+    height: $small-button-size;
     background-color: $light-grey;
     border-radius: 50%;
     @include middle-with-flex();
     flex-direction: column;
     position: absolute;
-    left: 24px;
+    left: $small-button-distance-from-middle;
     bottom: $joystick-size + 10px;
 
     .roof {
@@ -227,16 +265,16 @@ body {
       border-style: solid;
       border-color: transparent;
       border-bottom-color: $dark-grey;
-      border-left-width: 6px;
-      border-right-width: 6px;
-      border-bottom-width: 5px;
+      border-left-width: 2px * $multiplier;
+      border-right-width: 2px * $multiplier;
+      border-bottom-width: 2px * $multiplier;
     }
     .main-building {
       background-color: $light-grey;
-      width: 7px;
-      height: 6px;
-      box-shadow: inset 0 -1px 0 2px $dark-grey;
-      margin-bottom: 2px;
+      width: 3px * $multiplier;
+      height: 2px * $multiplier;
+      box-shadow: inset 0 -1px/3 * $multiplier 0 2px/3 * $multiplier $dark-grey;
+      margin-bottom: 1px * $multiplier;
     }
   }
 }
@@ -247,46 +285,47 @@ body {
   height: $console-height;
   @include middle-with-flex();
   position: relative;
+  box-shadow: $bottom-shadow;
 
   .screen-cutaway {
     position: absolute;
-    top: -10px;
+    top: -3px * $multiplier;
     border-radius: 50%;
     background-color: $background-color;
-    height: 20px;
-    width: 20px;
+    height: 7px * $multiplier;
+    width: 7px * $multiplier;
 
     &.cutaway-right {
-      right: -10px;
+      right: -3px * $multiplier;
     }
 
     &.cutaway-left {
-      left: -10px;
+      left: -3px * $multiplier;
     }
   }
 
   #screen {
     height: $screen-height;
     width: $screen-width;
-    background-color: #45484d;
+    background-color: $screen-colour;
     border-radius: $screen-border-radius;
     position: relative;
 
     .reflection {
       position: absolute;
       background-color: whitesmoke;
-      border-radius: 50px;
+      border-radius: 17px * $multiplier;
       height: $reflection-height;
-      top: 15px;
+      top: 5px * $multiplier;
 
       &.reflection-1 {
         width: $reflection-1-width;
-        left: 15px;
+        left: 5px * $multiplier;
       }
 
       &.reflection-2 {
         width: $reflection-2-width;
-        left: 15px + $reflection-1-width + 15px;
+        left: 5px * $multiplier + $reflection-1-width + 5px * $multiplier;
       }
     }
   }
