@@ -1,4 +1,4 @@
-$multiplier: 5;
+$multiplier: 4;
 
 // Colours
 $background-color: rgb(232, 232, 106);
@@ -51,6 +51,7 @@ $small-button-size: 6px * $multiplier;
 
 body {
   @include middle-with-flex();
+  flex-direction: column;
   height: 100vh;
   margin: 0;
   background-color: $background-color;
@@ -313,7 +314,7 @@ body {
 
     .reflection {
       position: absolute;
-      background-color: whitesmoke;
+      background-color: rgba(whitesmoke, 0.6);
       border-radius: 17px * $multiplier;
       height: $reflection-height;
       top: 5px * $multiplier;
@@ -328,5 +329,11 @@ body {
         left: 5px * $multiplier + $reflection-1-width + 5px * $multiplier;
       }
     }
+  }
+}
+
+div:not(#timer):not(#container):not(#left):not(#d-pad):not(#middle):not(.screen-cutaway):not(#screen):not(.reflection):not(#right):not(#abxy):not(#plus-button):not(#minus-button) {
+  &:active {
+    filter: brightness(50%);
   }
 }
