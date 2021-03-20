@@ -4,7 +4,8 @@
   "description": "Nintendo Switch made entirely out of divs and SCSS.",
   "main": "index.js",
   "scripts": {
-    "sass": "node-sass src/ -o src/"
+    "sass": "node-sass src/ -o src/",
+    "watch-sass": "node-sass -w src/ -o src/"
   },
   "repository": {
     "type": "git",
